@@ -10,6 +10,8 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { LogoutButton } from "@/components/LogoutButton";
 
+import { Navbar } from "@/components/Navbar";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -55,27 +57,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <nav className="absolute top-4 right-4 z-50 flex items-center gap-3">
-            {isAdmin && (
-              <Link href="/admin" className="text-sm font-bold bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-3 py-1.5 rounded-full shadow-md hover:scale-105 transition-all">
-                Admin Panel
-              </Link>
-            )}
-            <Link href="/" className="text-sm font-medium text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white transition-colors">
-              Home
-            </Link>
-            <Link href="/history" className="text-sm font-medium text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white transition-colors">
-              History
-            </Link>
-            <Link href="/about" className="text-sm font-medium text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white transition-colors">
-              The Science
-            </Link>
-            <Link href="/pomodoro" className="text-sm font-medium bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 px-3 py-1.5 rounded-full hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors">
-              Timer
-            </Link>
-            <ThemeToggle />
-            {session?.user && <LogoutButton />}
-          </nav>
+          <Navbar isAdmin={isAdmin} hasSession={!!session?.user} />
           {children}
           <Toaster 
             position="bottom-center"

@@ -83,18 +83,18 @@ export function HistoryClient({ initialTopics }: { initialTopics: TopicHistory[]
   };
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-12 md:py-20 flex flex-col gap-12 relative min-h-[85vh]">
-      <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-blue-500/10 dark:bg-blue-800/10 blur-[100px] rounded-full -z-10 pointer-events-none" />
+    <main className="max-w-4xl mx-auto px-4 py-8 md:py-16 flex flex-col gap-8 md:gap-12 relative min-h-[85vh]">
+      <div className="absolute top-0 left-1/4 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-blue-500/10 dark:bg-blue-800/10 blur-[100px] rounded-full -z-10 pointer-events-none" />
 
       <header className="flex flex-col items-start gap-4">
         <div className="inline-flex items-center justify-center p-3 bg-neutral-100 dark:bg-neutral-800 rounded-2xl shadow-sm">
           <Clock className="w-8 h-8 text-blue-500" />
         </div>
         <div>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-neutral-900 to-neutral-500 dark:from-white dark:to-neutral-400 bg-clip-text text-transparent">
+          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-neutral-900 to-neutral-500 dark:from-white dark:to-neutral-400 bg-clip-text text-transparent">
             Your Study Timeline
           </h1>
-          <p className="text-neutral-500 dark:text-neutral-400 font-medium text-lg mt-2">
+          <p className="text-neutral-500 dark:text-neutral-400 font-medium text-base md:text-lg mt-2">
             Track your cognitive patterns, upcoming schedules, and knowledge retention.
           </p>
         </div>
@@ -110,8 +110,8 @@ export function HistoryClient({ initialTopics }: { initialTopics: TopicHistory[]
         <div className="flex flex-col gap-10">
           {Object.entries(groupedTopics).map(([date, dayTopics]) => (
             <div key={date} className="flex flex-col gap-4 animate-in slide-in-from-bottom-4 fade-in duration-500">
-              <h2 className="text-sm font-bold tracking-widest uppercase text-neutral-500 dark:text-neutral-500 flex items-center gap-2 sticky top-[4.5rem] z-10 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md py-2 shadow-sm rounded-lg px-2 -mx-2">
-                <Calendar className="w-4 h-4" /> {date}
+              <h2 className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-neutral-500 dark:text-neutral-500 flex items-center gap-2 sticky top-16 z-10 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md py-3 shadow-sm rounded-lg px-2 -mx-2">
+                <Calendar className="w-3.5 h-3.5" /> {date}
               </h2>
               
               <div className="flex flex-col gap-3">
@@ -121,12 +121,12 @@ export function HistoryClient({ initialTopics }: { initialTopics: TopicHistory[]
                     className={`flex flex-col bg-white dark:bg-neutral-900 border ${topic.isActive ? 'border-neutral-200 dark:border-neutral-800' : 'border-dashed border-neutral-300 dark:border-neutral-700 opacity-70'} rounded-2xl shadow-sm hover:shadow-md transition-all overflow-hidden ${expandedId === topic.id ? 'ring-2 ring-neutral-300 dark:ring-neutral-700 shadow-md' : ''}`}
                   >
                     <div 
-                      className="p-5 flex items-center justify-between cursor-pointer"
+                      className="p-5 flex items-start sm:items-center justify-between gap-4 cursor-pointer"
                       onClick={() => toggleExpand(topic.id)}
                     >
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-3">
-                          <h3 className={`text-lg font-bold ${!topic.isActive ? 'text-neutral-500 line-through' : 'text-neutral-900 dark:text-white'}`}>
+                          <h3 className={`text-lg font-bold break-words pr-2 ${!topic.isActive ? 'text-neutral-500 line-through' : 'text-neutral-900 dark:text-white'}`}>
                             {topic.title}
                           </h3>
                           {!topic.isActive && <span className="text-[10px] font-bold uppercase tracking-wider bg-neutral-200 dark:bg-neutral-800 px-2 py-0.5 rounded-md text-neutral-500">Paused</span>}
@@ -151,9 +151,9 @@ export function HistoryClient({ initialTopics }: { initialTopics: TopicHistory[]
                             <h4 className="text-sm font-bold text-neutral-900 dark:text-neutral-200 mb-4 flex items-center gap-2">
                               <Calendar className="w-4 h-4 text-blue-500"/> Projected Spaced Repetition Array
                             </h4>
-                            <div className="flex flex-wrap gap-2 md:gap-3">
+                            <div className="flex overflow-x-auto pb-4 sm:pb-0 sm:flex-wrap gap-3 no-scrollbar -mx-2 px-2 sm:mx-0 sm:px-0">
                               {getTimeline(topic).map((step) => (
-                                <div key={step.revNumber} className={`flex flex-col items-center justify-center p-3 rounded-xl border min-w-[65px] transition-all
+                                <div key={step.revNumber} className={`flex flex-col items-center justify-center p-3 rounded-xl border min-w-[75px] sm:min-w-[85px] transition-all
                                   ${step.isPast ? 'bg-green-50/50 dark:bg-green-900/10 border-green-200 dark:border-green-800/50 text-green-700 dark:text-green-400' : 
                                   step.isNext ? (topic.isActive ? 'bg-blue-500 text-white border-blue-600 shadow-md transform scale-105' : 'bg-neutral-200 dark:bg-neutral-800 border-neutral-300 dark:border-neutral-700 text-neutral-500') : 
                                   'bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-neutral-400'}

@@ -164,13 +164,13 @@ export default function PomodoroTimer() {
   };
 
   return (
-    <main className="max-w-2xl mx-auto px-4 py-16 flex flex-col items-center gap-14 text-center min-h-[85vh] justify-center relative">
+    <main className="max-w-2xl mx-auto px-4 pt-28 pb-16 flex flex-col items-center gap-10 sm:gap-14 text-center min-h-[85vh] justify-center relative">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-neutral-200/50 dark:bg-neutral-800/20 blur-[120px] rounded-full -z-10 pointer-events-none" />
       
       <div className="flex flex-col items-center w-full px-4">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-neutral-900 to-neutral-500 dark:from-white dark:to-neutral-400 bg-clip-text text-transparent">Pomodoro Flow</h1>
         
-        <div className="h-32 md:h-32 flex items-start justify-center relative w-full max-w-3xl mx-auto mt-2 mb-6">
+        <div className="h-40 sm:h-32 md:h-32 flex items-start justify-center relative w-full max-w-3xl mx-auto mt-2 mb-6">
           {gitaQuotes.map((quote, i) => (
             <div 
               key={i} 
@@ -207,8 +207,8 @@ export default function PomodoroTimer() {
         </button>
       </div>
 
-      <div className={`relative flex items-center justify-center w-80 h-80 rounded-full border-[8px] sm:border-[12px] transition-colors duration-700 ${isActive ? (isWork ? "border-neutral-900 dark:border-white shadow-[0_0_40px_rgba(0,0,0,0.1)] dark:shadow-[0_0_40px_rgba(255,255,255,0.1)]" : "border-neutral-400 dark:border-neutral-500") : "border-neutral-200 dark:border-neutral-800"}`}>
-        <div className="text-7xl sm:text-8xl font-bold tracking-tighter tabular-nums text-neutral-900 dark:text-white">
+      <div className={`relative flex items-center justify-center w-64 h-64 sm:w-80 sm:h-80 rounded-full border-[8px] sm:border-[12px] transition-colors duration-700 ${isActive ? (isWork ? "border-neutral-900 dark:border-white shadow-[0_0_40px_rgba(0,0,0,0.1)] dark:shadow-[0_0_40px_rgba(255,255,255,0.1)]" : "border-neutral-400 dark:border-neutral-500") : "border-neutral-200 dark:border-neutral-800"}`}>
+        <div className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tighter tabular-nums text-neutral-900 dark:text-white">
           {formatTime(timeLeft)}
         </div>
       </div>

@@ -122,26 +122,26 @@ export function DashboardClient({ initialTopics, isAuthenticated }: { initialTop
   };
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-8 md:py-16 flex flex-col gap-12 sm:gap-16">
-      <header className="flex flex-col items-center text-center mt-4">
-        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter bg-gradient-to-br from-neutral-900 via-neutral-700 to-neutral-400 dark:from-white dark:via-neutral-200 dark:to-neutral-600 bg-clip-text text-transparent mb-6">
+    <main className="max-w-4xl mx-auto px-4 py-8 md:py-16 flex flex-col gap-8 sm:gap-16">
+      <header className="flex flex-col items-center text-center">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tighter bg-gradient-to-br from-neutral-900 via-neutral-700 to-neutral-400 dark:from-white dark:via-neutral-200 dark:to-neutral-600 bg-clip-text text-transparent mb-4 sm:mb-6">
           ReviseFlow
         </h1>
         
-        <div className="h-32 md:h-28 flex items-center justify-center relative w-full max-w-3xl mt-4 px-4">
+        <div className="min-h-[160px] sm:min-h-[128px] flex items-center justify-center relative w-full max-w-3xl mt-2 px-2 sm:px-4">
           {gitaQuotes.map((quote, i) => (
             <div 
               key={i} 
               className={`absolute flex flex-col items-center justify-center gap-2 transition-all duration-1000 w-full ${i === quoteIndex ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'}`}
             >
-              <p className="text-xl md:text-2xl font-bold text-orange-600 dark:text-orange-400 text-center tracking-wide font-serif drop-shadow-sm">
+              <p className="text-lg sm:text-xl md:text-2xl font-bold text-orange-600 dark:text-orange-400 text-center tracking-wide font-serif drop-shadow-sm leading-tight">
                 {quote.hindi}
               </p>
-              <div className="flex flex-col items-end max-w-2xl w-full">
-                <p className="text-sm md:text-base font-medium text-neutral-500 dark:text-neutral-400 text-center italic text-balance w-full">
+              <div className="flex flex-col items-center sm:items-end max-w-2xl w-full">
+                <p className="text-xs sm:text-sm md:text-base font-medium text-neutral-500 dark:text-neutral-400 text-center italic text-balance w-full leading-relaxed">
                   "{quote.english}"
                 </p>
-                <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-neutral-400/80 dark:text-neutral-600 mt-2 pr-6 md:pr-10">
+                <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-neutral-400/80 dark:text-neutral-600 mt-2 sm:pr-6 md:pr-10">
                   — Bhagavad Gita, {quote.source}
                 </span>
               </div>
@@ -163,14 +163,14 @@ export function DashboardClient({ initialTopics, isAuthenticated }: { initialTop
               value={newTopic}
               onChange={(e) => setNewTopic(e.target.value)}
               placeholder="e.g. React Hooks, Cellular Respiration..."
-              className="flex-1 bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-2xl px-6 py-4 text-lg focus:outline-none focus:ring-4 focus:ring-neutral-200 dark:focus:ring-neutral-800 placeholder:text-neutral-400 transition-all font-medium"
+              className="flex-1 bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-2xl px-5 py-3.5 text-base sm:text-lg focus:outline-none focus:ring-4 focus:ring-neutral-200 dark:focus:ring-neutral-800 placeholder:text-neutral-400 transition-all font-medium"
               required
               disabled={isAdding}
             />
             <button
               type="submit"
               disabled={isAdding}
-              className="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 px-8 py-4 rounded-2xl text-lg font-bold hover:scale-105 active:scale-95 transition-all whitespace-nowrap shadow-lg hover:shadow-xl disabled:opacity-50 disabled:hover:scale-100"
+              className="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 px-6 py-3.5 rounded-2xl text-base sm:text-lg font-bold hover:scale-105 active:scale-95 transition-all whitespace-nowrap shadow-lg hover:shadow-xl disabled:opacity-50 disabled:hover:scale-100"
             >
               {isAdding ? "Adding..." : (isAuthenticated ? "Add Topic" : "Add & Login")}
             </button>
@@ -202,7 +202,7 @@ export function DashboardClient({ initialTopics, isAuthenticated }: { initialTop
               {topics.map((topic) => (
                 <div key={topic.id} className="flex items-center justify-between p-5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-sm hover:shadow-md transition-all group">
                   <div className="flex flex-col gap-1">
-                    <h3 className="text-lg font-semibold">{topic.title}</h3>
+                    <h3 className="text-lg font-semibold break-words break-all sm:break-normal max-w-[200px] sm:max-w-none pr-2">{topic.title}</h3>
                     <div className="flex items-center gap-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400">
                       <Clock className="w-3.5 h-3.5" />
                       Revision #{topic.revisionCount}
