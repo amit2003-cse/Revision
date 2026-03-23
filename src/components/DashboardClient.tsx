@@ -172,7 +172,7 @@ export function DashboardClient({ initialTopics, isAuthenticated }: { initialTop
               disabled={isAdding}
               className="bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 px-6 py-3.5 rounded-2xl text-base sm:text-lg font-bold hover:scale-105 active:scale-95 transition-all whitespace-nowrap shadow-lg hover:shadow-xl disabled:opacity-50 disabled:hover:scale-100"
             >
-              {isAdding ? "Adding..." : (isAuthenticated ? "Add Topic" : "Add & Login")}
+              {isAdding ? "Adding..." : "Add Topic"}
             </button>
           </form>
         </section>

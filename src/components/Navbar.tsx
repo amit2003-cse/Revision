@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { ThemeToggle } from "./ThemeToggle";
 import { LogoutButton } from "./LogoutButton";
-import { Menu, X, Home, Clock, Info, Timer, Shield } from "lucide-react";
+import { signIn } from "next-auth/react";
+import { Menu, X, Home, Clock, Info, Timer, Shield, LogIn } from "lucide-react";
 
 interface NavbarProps {
   isAdmin: boolean;
@@ -54,7 +55,17 @@ export function Navbar({ isAdmin, hasSession }: NavbarProps) {
             ))}
             <div className="flex items-center gap-3 pl-4 border-l border-neutral-200 dark:border-neutral-800">
               <ThemeToggle />
-              {hasSession && <LogoutButton />}
+              {hasSession ? (
+                <LogoutButton />
+              ) : (
+                <button 
+                  onClick={() => signIn("google")}
+                  className="text-sm font-bold bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 rounded-full shadow-md hover:scale-105 transition-all flex items-center gap-2"
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  Login
+                </button>
+              )}
             </div>
           </div>
 
@@ -95,9 +106,19 @@ export function Navbar({ isAdmin, hasSession }: NavbarProps) {
                 {link.label}
               </Link>
             ))}
-            {hasSession && (
+            {hasSession ? (
               <div className="mt-2 pt-2 border-t border-neutral-100 dark:border-neutral-800">
                 <LogoutButton />
+              </div>
+            ) : (
+              <div className="mt-2 pt-2 border-t border-neutral-100 dark:border-neutral-800">
+                <button 
+                  onClick={() => signIn("google")}
+                  className="w-full flex items-center gap-3 p-4 rounded-2xl bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-bold"
+                >
+                  <LogIn className="w-5 h-5" />
+                  Login
+                </button>
               </div>
             )}
           </div>
