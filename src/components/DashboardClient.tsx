@@ -12,28 +12,7 @@ type Topic = {
   revisionCount: number;
 };
 
-const gitaQuotes = [
-  {
-    hindi: "तुम्हारा अधिकार केवल कर्म करने में है, उसके फलों में कभी नहीं।",
-    english: "You have a right to perform your prescribed duty, but you are not entitled to the fruits of action.",
-    source: "2.47"
-  },
-  {
-    hindi: "मनुष्य को चाहिए कि वह अपने मन से अपना उद्धार करे और खुद को कभी नीचे न गिराए।",
-    english: "Elevate yourself through the power of your mind, and do not degrade yourself.",
-    source: "6.5"
-  },
-  {
-    hindi: "हे धनंजय! सफलता या विफलता की आसक्ति को त्यागकर समभाव से अपना कर्म करो।",
-    english: "Perform your duty equipoised, abandoning all attachment to success or failure.",
-    source: "2.48"
-  },
-  {
-    hindi: "जो श्रद्धायुक्त है और जिसने अपनी इंद्रियों को वश में कर लिया है, वही सच्चा ज्ञान प्राप्त करता है।",
-    english: "A faithful man who is dedicated to knowledge and subdues his senses achieves such knowledge.",
-    source: "4.39"
-  }
-];
+import { GITA_QUOTES } from "@/lib/constants";
 
 export function DashboardClient({ initialTopics, isAuthenticated }: { initialTopics: Topic[], isAuthenticated: boolean }) {
   const [topics, setTopics] = useState(initialTopics);
@@ -45,7 +24,7 @@ export function DashboardClient({ initialTopics, isAuthenticated }: { initialTop
   useEffect(() => {
     // Quote rotation
     const int = setInterval(() => {
-      setQuoteIndex(prev => (prev + 1) % gitaQuotes.length);
+      setQuoteIndex(prev => (prev + 1) % GITA_QUOTES.length);
     }, 8000);
     return () => clearInterval(int);
   }, []);
@@ -129,7 +108,7 @@ export function DashboardClient({ initialTopics, isAuthenticated }: { initialTop
         </h1>
         
         <div className="min-h-[160px] sm:min-h-[128px] flex items-center justify-center relative w-full max-w-3xl mt-2 px-2 sm:px-4">
-          {gitaQuotes.map((quote, i) => (
+          {GITA_QUOTES.map((quote, i) => (
             <div 
               key={i} 
               className={`absolute flex flex-col items-center justify-center gap-2 transition-all duration-1000 w-full ${i === quoteIndex ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'}`}

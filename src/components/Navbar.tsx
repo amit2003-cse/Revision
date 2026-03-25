@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ThemeToggle } from "./ThemeToggle";
 import { LogoutButton } from "./LogoutButton";
 import { signIn } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import { Menu, X, Home, Clock, Info, Timer, Shield, LogIn } from "lucide-react";
 
 interface NavbarProps {
@@ -14,6 +15,7 @@ interface NavbarProps {
 
 export function Navbar({ isAdmin, hasSession }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -39,20 +41,26 @@ export function Navbar({ isAdmin, hasSession }: NavbarProps) {
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-6">
             {isAdmin && (
-              <Link href="/admin" className="text-sm font-bold bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 rounded-full shadow-md hover:scale-105 transition-all flex items-center gap-2">
+              <Link href="/admin" className={`text-sm font-bold px-4 py-2 rounded-full shadow-md hover:scale-105 transition-all flex items-center gap-2 ${pathname === '/admin' ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900' : 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100'}`}>
                 <Shield className="w-3.5 h-3.5" />
                 Admin Panel
               </Link>
             )}
-            {navLinks.map((link) => (
-              <Link 
-                key={link.href} 
-                href={link.href}
-                className={`text-sm font-medium transition-colors ${link.highlight ? 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 px-4 py-2 rounded-full hover:bg-red-100 dark:hover:bg-red-500/20' : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'}`}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link 
+                  key={link.href} 
+                  href={link.href}
+                  className={`text-sm font-medium transition-all relative ${link.highlight ? (isActive ? 'bg-red-600 text-white px-4 py-2 rounded-full shadow-md' : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 px-4 py-2 rounded-full hover:bg-red-100 dark:hover:bg-red-500/20') : (isActive ? 'text-neutral-900 dark:text-white font-bold' : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white')}`}
+                >
+                  {link.label}
+                  {!link.highlight && isActive && (
+                    <span className="absolute -bottom-[21px] left-0 right-0 h-0.5 bg-neutral-900 dark:bg-white rounded-full animate-in fade-in duration-500" />
+                  )}
+                </Link>
+              );
+            })}
             <div className="flex items-center gap-3 pl-4 border-l border-neutral-200 dark:border-neutral-800">
               <ThemeToggle />
               {hasSession ? (
@@ -89,23 +97,26 @@ export function Navbar({ isAdmin, hasSession }: NavbarProps) {
               <Link 
                 href="/admin" 
                 onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 p-4 rounded-2xl bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-bold"
+                className={`flex items-center gap-3 p-4 rounded-2xl font-bold transition-all ${pathname === '/admin' ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900' : 'bg-neutral-50 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-300'}`}
               >
                 <Shield className="w-5 h-5" />
                 Admin Panel
               </Link>
             )}
-            {navLinks.map((link) => (
-              <Link 
-                key={link.href} 
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-3 p-4 rounded-2xl font-medium transition-all ${link.highlight ? 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400' : 'text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-900'}`}
-              >
-                {link.icon}
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link 
+                  key={link.href} 
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center gap-3 p-4 rounded-2xl font-bold transition-all ${link.highlight ? (isActive ? 'bg-red-600 text-white' : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400') : (isActive ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-900')}`}
+                >
+                  {link.icon}
+                  {link.label}
+                </Link>
+              );
+            })}
             {hasSession ? (
               <div className="mt-2 pt-2 border-t border-neutral-100 dark:border-neutral-800">
                 <LogoutButton />

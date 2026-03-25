@@ -52,6 +52,15 @@ export async function PATCH(
 
     const body = await request.json().catch(() => ({}));
 
+    // If request contains title, update that specifically
+    if (body.title !== undefined) {
+      const updatedTopic = await prisma.topic.update({
+        where: { id },
+        data: { title: body.title },
+      });
+      return NextResponse.json(updatedTopic);
+    }
+
     // If request contains isActive, just toggle that.
     if (typeof body.isActive === "boolean") {
       const updatedTopic = await prisma.topic.update({
