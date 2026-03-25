@@ -22,7 +22,7 @@ export function Navbar({ isAdmin, hasSession }: NavbarProps) {
   const navLinks = [
     { href: "/", label: "Home", icon: <Home className="w-4 h-4" /> },
     { href: "/history", label: "History", icon: <Clock className="w-4 h-4" /> },
-    { href: "/about", label: "The Science", icon: <Info className="w-4 h-4" /> },
+    { href: "/blog", label: "Blog", icon: <Info className="w-4 h-4" /> },
     { href: "/pomodoro", label: "Timer", icon: <Timer className="w-4 h-4" />, highlight: true },
   ];
 
