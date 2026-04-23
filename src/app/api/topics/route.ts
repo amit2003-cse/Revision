@@ -13,43 +13,20 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { title, notes } = body;
 
-    if (!title) {
+    if (!title || typeof title !== "string" || title.trim().length === 0) {
       return NextResponse.json({ error: "Title is required" }, { status: 400 });
     }
 
-    const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);
-
-    const existingTopic = await prisma.topic.findFirst({
-      where: {
-        userId: session.user.id,
-        createdAt: {
-          gte: startOfDay,
-        },
-      },
-      orderBy: {
-        createdAt: 'asc', // append to the first one created today
-      },
-    });
-
-    if (existingTopic) {
-      const updatedTopic = await prisma.topic.update({
-        where: { id: existingTopic.id },
-        data: {
-          title: `${existingTopic.title} • ${title}`,
-          notes: notes ? `${existingTopic.notes}\n${notes}` : existingTopic.notes,
-        },
-      });
-      return NextResponse.json(updatedTopic, { status: 200 });
-    }
+    const sanitizedTitle = title.trim().slice(0, 200);
+    const sanitizedNotes = notes ? String(notes).trim().slice(0, 2000) : "";
 
     const nextDate = new Date();
-    nextDate.setDate(nextDate.getDate() + 1); // Tomorrow default spaced repetition
+    nextDate.setDate(nextDate.getDate() + 1); // First revision tomorrow
 
     const topic = await prisma.topic.create({
       data: {
-        title,
-        notes: notes || "",
+        title: sanitizedTitle,
+        notes: sanitizedNotes,
         userId: session.user.id,
         nextRevisionDate: nextDate,
         revisionCount: 0,
@@ -58,7 +35,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(topic, { status: 201 });
   } catch (error) {
-    console.error("Error creating/updating topic:", error);
+    console.error("Error creating topic:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
@@ -70,19 +47,19 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get today's start and end date for filtering
     const today = new Date();
     today.setHours(23, 59, 59, 999);
 
     const topics = await prisma.topic.findMany({
       where: {
         userId: session.user.id,
+        isActive: true,
         nextRevisionDate: {
-          lte: today, // Fetch topics due today or before today
+          lte: today,
         },
       },
       orderBy: {
-        nextRevisionDate: 'asc',
+        nextRevisionDate: "asc",
       },
     });
 

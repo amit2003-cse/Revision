@@ -13,7 +13,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const { id } = await params;
-    
+
     const topic = await prisma.topic.findUnique({ where: { id } });
     if (!topic || topic.userId !== session.user.id) {
       return NextResponse.json({ error: "Not found or unauthorized" }, { status: 404 });
@@ -22,6 +22,7 @@ export async function DELETE(
     await prisma.topic.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error("Error deleting topic:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
@@ -52,16 +53,20 @@ export async function PATCH(
 
     const body = await request.json().catch(() => ({}));
 
-    // If request contains title, update that specifically
-    if (body.title !== undefined) {
+    // Update title
+    if (typeof body.title === "string") {
+      const sanitizedTitle = body.title.trim().slice(0, 200);
+      if (!sanitizedTitle) {
+        return NextResponse.json({ error: "Title cannot be empty" }, { status: 400 });
+      }
       const updatedTopic = await prisma.topic.update({
         where: { id },
-        data: { title: body.title },
+        data: { title: sanitizedTitle },
       });
       return NextResponse.json(updatedTopic);
     }
 
-    // If request contains isActive, just toggle that.
+    // Toggle active status
     if (typeof body.isActive === "boolean") {
       const updatedTopic = await prisma.topic.update({
         where: { id },
@@ -70,10 +75,10 @@ export async function PATCH(
       return NextResponse.json(updatedTopic);
     }
 
-    // Spaced repetition interval logic
+    // Default action: Mark revision done (spaced repetition logic)
     const intervals = [1, 2, 4, 8, 16, 32]; // Days
     const nextInterval = intervals[Math.min(topic.revisionCount, intervals.length - 1)];
-    
+
     const nextDate = new Date();
     nextDate.setDate(nextDate.getDate() + nextInterval);
 

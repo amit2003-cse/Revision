@@ -1,38 +1,42 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { DashboardClient } from "@/components/DashboardClient";
 
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
-  
-  let topics: any[] = [];
-  
+
+  let topics: { id: string; title: string; nextRevisionDate: string; revisionCount: number }[] = [];
+
   if (session?.user?.id) {
-    // Fetch topics due today or earlier
     const today = new Date();
     today.setHours(23, 59, 59, 999);
 
-    topics = await prisma.topic.findMany({
+    const rawTopics = await prisma.topic.findMany({
       where: {
         userId: session.user.id,
         isActive: true,
-        nextRevisionDate: {
-          lte: today,
-        },
+        nextRevisionDate: { lte: today },
       },
-      orderBy: {
-        nextRevisionDate: 'asc',
-      },
+      orderBy: { nextRevisionDate: "asc" },
       select: {
         id: true,
         title: true,
         nextRevisionDate: true,
-        revisionCount: true
-      }
+        revisionCount: true,
+      },
     });
+
+    topics = rawTopics.map((t: { id: string; title: string; nextRevisionDate: Date; revisionCount: number }) => ({
+      ...t,
+      nextRevisionDate: t.nextRevisionDate.toISOString(),
+    }));
   }
 
-  return <DashboardClient initialTopics={topics} isAuthenticated={!!session?.user} />;
+  return (
+    <DashboardClient
+      initialTopics={topics}
+      isAuthenticated={!!session?.user}
+    />
+  );
 }

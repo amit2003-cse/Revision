@@ -35,7 +35,7 @@ export default async function HistoryPage() {
   });
 
   // Safely serialize dates for the client boundary
-  const serializableTopics = topics.map((t: any) => ({
+  const serializableTopics = topics.map((t: { id: string; title: string; createdAt: Date; updatedAt: Date; nextRevisionDate: Date; revisionCount: number; isActive: boolean }) => ({
     ...t,
     createdAt: t.createdAt.toISOString(),
     updatedAt: t.updatedAt.toISOString(),

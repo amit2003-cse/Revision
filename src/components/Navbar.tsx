@@ -39,7 +39,7 @@ export function Navbar({ isAdmin, hasSession }: NavbarProps) {
           </Link>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-6">
             {isAdmin && (
               <Link href="/admin" className={`text-sm font-bold px-4 py-2 rounded-full shadow-md hover:scale-105 transition-all flex items-center gap-2 ${pathname === '/admin' ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900' : 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100'}`}>
                 <Shield className="w-3.5 h-3.5" />
@@ -78,20 +78,20 @@ export function Navbar({ isAdmin, hasSession }: NavbarProps) {
           </div>
 
           {/* Mobile Right Controls */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-3">
             <ThemeToggle />
             <button 
               onClick={toggleMenu}
-              className="p-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 active:scale-95 transition-all"
+              className={`p-2.5 rounded-xl transition-all duration-300 active:scale-90 ${isOpen ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 shadow-lg' : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white border border-neutral-200 dark:border-neutral-700'}`}
               aria-label="Toggle Menu"
             >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isOpen ? <X className="w-6 h-6 stroke-[2.5]" /> : <Menu className="w-6 h-6 stroke-[2.5]" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Menu Overlay */}
-        <div className={`md:hidden absolute top-16 left-0 right-0 bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800 overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div className={`lg:hidden absolute top-[65px] left-0 right-0 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-2xl border-b border-neutral-200 dark:border-neutral-800 overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${isOpen ? 'max-h-[500px] opacity-100 shadow-2xl' : 'max-h-0 opacity-0'}`}>
           <div className="p-4 flex flex-col gap-2">
             {isAdmin && (
               <Link 

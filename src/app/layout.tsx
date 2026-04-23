@@ -3,14 +3,12 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "react-hot-toast";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { LogoutButton } from "@/components/LogoutButton";
 import Script from "next/script";
 
+import Providers from "@/components/Providers";
 import { Navbar } from "@/components/Navbar";
 
 const geistSans = Geist({
@@ -59,17 +57,16 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-B4C9N3X4HW" />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'G-B4C9N3X4HW');
-        `}
-      </Script>
       <body suppressHydrationWarning className="min-h-full flex flex-col bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50 transition-colors duration-300">
+        <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=G-B4C9N3X4HW`} />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-B4C9N3X4HW');
+          `}
+        </Script>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -77,7 +74,9 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <Navbar isAdmin={isAdmin} hasSession={!!session?.user} />
-          {children}
+          <Providers>
+            {children}
+          </Providers>
           <Toaster 
             position="bottom-center"
             toastOptions={{
